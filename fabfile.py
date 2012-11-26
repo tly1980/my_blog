@@ -42,17 +42,18 @@ def deploy():
         run('git pull')
 
     with cd('~/blogging/octopress'):
-        run('rm Rakefile _config.yml config.rb')
+        run('rm Rakefile _config.yml config.rb source')
         run('ln -s ../my_blog/Rakefile .')
         run('ln -s ../my_blog/_config.yml .')
         run('ln -s ../my_blog/config.rb .')
+        run('ln -s ../my_blog/source .')
+        run('rake generate')
 
-        with prefix('source ~/.bash_profile'):
-            run('rake generate')
+    sudo('rm -rvf /srv/keyonly.com')
+    with cd('~'):
+        sudo('cp -r blogging/octopress/public /srv/keyonly.com')
 
-    sudo('ln -s ~/blogging/octopress/public /srv/keyonly.com')
     file_write('/etc/nginx/sites-available/keyonly.com', site_cfg, sudo=True)
-
     if not file_exists('/etc/nginx/sites-enabled/keyonly.com'):
         sudo('ln -s /etc/nginx/sites-available/keyonly.com /etc/nginx/sites-enabled/keyonly.com')
 
