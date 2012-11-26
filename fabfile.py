@@ -13,10 +13,9 @@ server {
         root /srv/keyonly.com/;
         try_files $uri $uri/ /index.html;
     }
-
-
 }
 """
+
 
 def test_exists():
     with cd('~'):
