@@ -1,6 +1,6 @@
-from fabric.api import sudo, cd, run
-from fabric.context_managers import prefix
-from cuisine import dir_exists, file_write, file_exists, upstart_ensure
+from fabric.api import sudo, cd
+from fabric.context_managers import prefix, settings
+from cuisine import dir_exists, file_write, file_exists, upstart_ensure, run
 
 
 site_cfg = """
@@ -36,13 +36,15 @@ def deploy():
 
     with cd('~/blogging/octopress'):
         with prefix('source ~/.bash_profile'):
+            # install the desire ruby version
             run('bundle install')
 
     with cd('~/blogging/my_blog'):
         run('git pull')
 
     with cd('~/blogging/octopress'):
-        run('rm Rakefile _config.yml config.rb source')
+        with settings(warn_only=True):
+            run('rm Rakefile _config.yml config.rb source')
         run('ln -s ../my_blog/Rakefile .')
         run('ln -s ../my_blog/_config.yml .')
         run('ln -s ../my_blog/config.rb .')
@@ -52,6 +54,7 @@ def deploy():
     sudo('rm -rvf /srv/keyonly.com')
     with cd('~'):
         sudo('cp -r blogging/octopress/public /srv/keyonly.com')
+        sudo('chmod -R 0755 /srv/keyonly.com')
 
     file_write('/etc/nginx/sites-available/keyonly.com', site_cfg, sudo=True)
     if not file_exists('/etc/nginx/sites-enabled/keyonly.com'):
