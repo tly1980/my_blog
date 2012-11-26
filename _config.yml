@@ -4,7 +4,7 @@
 
 url: http://keyonly.com/
 title: Minddriven
-subtitle: 某人的技术于非技术容器
+subtitle: 某人的技术与非技术容器
 author: Tom Tang
 simple_search: http://google.com/search
 description:
@@ -19,8 +19,7 @@ date_format: "ordinal"
 subscribe_rss: /atom.xml
 subscribe_email:
 # RSS feeds can list your email address if you like
-email:
-
+email: tom@keyonly.com
 # ----------------------- #
 #    Jekyll & Plugins     #
 # ----------------------- #

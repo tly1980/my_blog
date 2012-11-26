@@ -51,7 +51,6 @@ def deploy():
         run('ln -s ../my_blog/source .')
         run('rake generate')
 
-    sudo('rm -rvf /srv/keyonly.com')
     with cd('~'):
         with settings(warn_only=True):
             sudo('rm -rvf /srv/keyonly.com')
