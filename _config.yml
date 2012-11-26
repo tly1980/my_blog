@@ -3,8 +3,8 @@
 # ----------------------- #
 
 url: http://keyonly.com/
-title: 不断编程中
-subtitle: PP的技术容器
+title: Minddriven
+subtitle: 某人的技术于非技术容器
 author: Tom Tang
 simple_search: http://google.com/search
 description:
@@ -93,7 +93,7 @@ disqus_short_name:
 disqus_show_comment_count: false
 
 # Google Analytics
-google_analytics_tracking_id:
+google_analytics_tracking_id:UA-36181474-2
 
 # Facebook Like
 facebook_like: false
