@@ -44,6 +44,8 @@ def deploy():
     with cd('~/blogging/octopress'):
         with settings(warn_only=True):
             run('rm Rakefile _config.yml config.rb source')
+            run('rm -rvf public')
+
         run('ln -s ../my_blog/Rakefile .')
         run('ln -s ../my_blog/_config.yml .')
         run('ln -s ../my_blog/config.rb .')
