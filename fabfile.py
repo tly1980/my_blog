@@ -52,6 +52,9 @@ def deploy():
 
     sudo('rm -rvf /srv/keyonly.com')
     with cd('~'):
+        with settings(warn_only=True):
+            sudo('rm -rvf /srv/keyonly.com')
+
         sudo('cp -r blogging/octopress/public /srv/keyonly.com')
         sudo('chmod -R 0755 /srv/keyonly.com')
 
