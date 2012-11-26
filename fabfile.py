@@ -1,4 +1,5 @@
-from fabric.api import sudo, cd
+from fabric.api import sudo, cd, run
+from fabric.context_managers import prefix
 from cuisine import dir_exists, file_write, file_exists, upstart_ensure
 
 
@@ -8,13 +9,8 @@ server {
     access_log /var/log/nginx/keyonly.access.log;
     index index.html index.htm;
 
-    location ~ ^/my_blog/(.+) {
-        root /srv/my_blog/;
-        satisfy any;
-    }
-
     location / {
-        root /srv/my_blog/;
+        root /srv/keyonly.com/;
         try_files $uri $uri/ /index.html;
     }
 
@@ -22,15 +18,39 @@ server {
 }
 """
 
+def test_exists():
+    with cd('~'):
+        if not dir_exists('blogging'):
+            print 'not exist'
+        else:
+            print 'exist'
+
 
 def deploy():
-    if not dir_exists('/srv/my_blog'):
-        with cd('/srv/'):
-            sudo('git clone git://github.com/tly1980/my_blog.git')
+    with cd('~'):
+        if not dir_exists('blogging'):
+            run('mkdir blogging')
+            with cd('blogging'):
+                run('git clone git://github.com/imathis/octopress.git')
+                run('git clone git://github.com/tly1980/my_blog.git')
 
-    with cd('/srv/my_blog'):
-        sudo('git pull')
+    with cd('~/blogging/octopress'):
+        with prefix('source ~/.bash_profile'):
+            run('bundle install')
 
+    with cd('~/blogging/my_blog'):
+        run('git pull')
+
+    with cd('~/blogging/octopress'):
+        run('rm Rakefile _config.yml config.rb')
+        run('ln -s ../my_blog/Rakefile .')
+        run('ln -s ../my_blog/_config.yml .')
+        run('ln -s ../my_blog/config.rb .')
+
+        with prefix('source ~/.bash_profile'):
+            run('rake generate')
+
+    sudo('ln -s ~/blogging/octopress/public /srv/keyonly.com')
     file_write('/etc/nginx/sites-available/keyonly.com', site_cfg, sudo=True)
 
     if not file_exists('/etc/nginx/sites-enabled/keyonly.com'):
