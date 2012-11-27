@@ -21,6 +21,7 @@ Ops 就是 Operation, Dev 如无意外就是开发。
 DevOps 中，Python 界的[Fabric](http://fabfile.org) 也经常被提起。而据说 Instagram 就是用 [Fabric](http://fabfile.org) 去做的。而有人在这 [Fabric](http://fabfile.org) 之上做了 [Crusine](https://github.com/sebastien/cuisine)，多做一层封装，提供多一些的抽象，简化了某些 API。
 
 废话少说，奉上代码：  
+### 一、配置系统基本环境的代码
 主要入口是 prepare_system，其中必须的参数是你必须提供 admin_user 用户名。  
 这段代码会创建一个新的用户，而其属于 admin 组。这个用户会使用你账号下的 DSA public key，以供后来免密码登陆。
 
@@ -29,8 +30,84 @@ DevOps 中，Python 界的[Fabric](http://fabfile.org) 也经常被提起。而�
 
 其中也有不少都可以删掉的东西，譬如 prepare_rbenvs, prepare_devenv 。用不到尽管删除掉。
 
+
 ```
 fab -H yourhost -u root prepare_system:new_admin
 ```
 {% gist 4151899 %}
 
+### 二、自动生成 Octopress 的博客代码。
+使用方法很简单。先写好博客，commit&push 后就用调用 fabric 进行部署。
+
+
+```
+fab -H keyonly.com -u your_user deploy
+```
+
+```python
+from fabric.api import sudo, cd
+from fabric.context_managers import prefix, settings
+from cuisine import dir_exists, file_write, file_exists, upstart_ensure, run
+
+
+site_cfg = """
+server {
+    server_name    www.keyonly.com    keyonly.com  keyonly.test;
+    access_log /var/log/nginx/keyonly.access.log;
+    index index.html index.htm;
+
+    location / {
+        root /srv/keyonly.com/;
+        try_files $uri $uri/ /index.html;
+    }
+}
+"""
+
+
+def test_exists():
+    with cd('~'):
+        if not dir_exists('blogging'):
+            print 'not exist'
+        else:
+            print 'exist'
+
+
+def deploy():
+    with cd('~'):
+        if not dir_exists('blogging'):
+            run('mkdir blogging')
+            with cd('blogging'):
+                run('git clone git://github.com/imathis/octopress.git')
+                run('git clone git://github.com/tly1980/my_blog.git')
+
+    with cd('~/blogging/octopress'):
+        with prefix('source ~/.bash_profile'):
+            # install the desire ruby version
+            run('bundle install')
+
+    with cd('~/blogging/my_blog'):
+        run('git pull')
+
+    with cd('~/blogging/octopress'):
+        with settings(warn_only=True):
+            run('rm Rakefile _config.yml config.rb source')
+
+        run('ln -s ../my_blog/Rakefile .')
+        run('ln -s ../my_blog/_config.yml .')
+        run('ln -s ../my_blog/config.rb .')
+        run('ln -s ../my_blog/source .')
+        run('rake generate')
+
+    with cd('~'):
+        with settings(warn_only=True):
+            sudo('rm -rvf /srv/keyonly.com')
+
+        sudo('cp -r blogging/octopress/public /srv/keyonly.com')
+        sudo('chmod -R 0755 /srv/keyonly.com')
+
+    file_write('/etc/nginx/sites-available/keyonly.com', site_cfg, sudo=True)
+    if not file_exists('/etc/nginx/sites-enabled/keyonly.com'):
+        sudo('ln -s /etc/nginx/sites-available/keyonly.com /etc/nginx/sites-enabled/keyonly.com')
+
+    upstart_ensure('nginx')
+```
