@@ -1,7 +1,7 @@
-from fabric.api import sudo, cd
-from fabric.context_managers import prefix, settings
+from fabric.api import sudo, cd, local
+from fabric.context_managers import prefix, settings, lcd
 from cuisine import dir_exists, file_write, file_exists, upstart_ensure, run
-
+import os
 
 site_cfg = """
 server {
@@ -17,6 +17,16 @@ server {
 """
 
 
+def gen():
+    o_path = os.path.realpath(
+        os.path.join(os.path.dirname(os.path.realpath(__file__)),
+            '..', 'octopress')
+    )
+
+    with lcd(o_path):
+        local('rake generate')
+
+
 def test_exists():
     with cd('~'):
         if not dir_exists('blogging'):
@@ -25,7 +35,13 @@ def test_exists():
             print 'exist'
 
 
-def deploy():
+def deploy(commit_msg=None):
+    if commit_msg:
+        localpath = os.path.dirname(os.path.realpath(__file__))
+        with lcd(localpath):
+            local('git commit -am "{commit_msg}"'.format(commit_msg=commit_msg))
+            local('git push')
+
     with cd('~'):
         if not dir_exists('blogging'):
             run('mkdir blogging')
