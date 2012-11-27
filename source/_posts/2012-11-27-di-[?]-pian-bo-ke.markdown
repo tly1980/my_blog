@@ -6,10 +6,21 @@ comments: true
 categories: [技术, 非技术]
 ---
 
-瞎折腾了半天，用 fabric 做了 linode 跟 Octopress 的自动化部署。  
-现在终于可以用 Octopress 写博客了~！！
+闲置了大半年的 Linode 终于真正用起来了。  
+最近一直在玩 Vagrant 跟 Fabric 的东西，终于能够做到自动化安装跟发布程序了。
+现在可以用 Octopress 写博客了~！！ 
 
- 
- {% codeblock %}
+ 代码高亮还是很不错的说
+
+python
+```python
+print "hello, world~!"
+```
+javascript
+```javascript
 console.log('hello, world~!');
-{% endcodeblock %}
+```
+coffeescript
+```coffeescript
+console.log "hello, world~!"
+```
