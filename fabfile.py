@@ -50,8 +50,8 @@ def deploy_plugin():
 
 
 def deploy(commit_msg=None):
+    localpath = os.path.dirname(os.path.realpath(__file__))
     if commit_msg:
-        localpath = os.path.dirname(os.path.realpath(__file__))
         with lcd(localpath):
             with settings(warn_only=True):
                 local('git commit -am "{commit_msg}"'.format(commit_msg=commit_msg))
