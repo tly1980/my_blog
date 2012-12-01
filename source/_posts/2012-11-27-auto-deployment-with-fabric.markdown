@@ -1,9 +1,11 @@
 ---
 layout: post
-title: "用 Fabric 跟 Crusine 做自动化发布"
+title: "用 Fabric 跟 Cuisine 做自动化发布"
 date: 2012-11-27 11:33
 comments: true
-categories: [技术, DevOps, Fabric, Crusine]
+categories: [技术, DevOps, fabric, cuisine]
+keywords: devops, fabric, cuisine, 自动化发布
+description: 用 Fabric 跟 Cuisine 做自动化发布
 ---
 
 在招工广告上经常见到提到 DevOps。  
@@ -18,7 +20,7 @@ Ops 就是 Operation, Dev 如无意外就是开发。
 
 之前也好奇试了一下 Chef，有感于一个 Chef recipie 实在需要太多文件了。搞不懂用shell都是几行的东西，他能搞 n 个文件夹，n 个文件出来。然后这玩意儿还很火。囧rz...  
 鉴于本人智商有限，刚刚接触 DevOps 这种东西，还是玩一些 low tech 的东西吧。  
-DevOps 中，Python 界的[Fabric](http://fabfile.org) 也经常被提起。而据说 Instagram 就是用 [Fabric](http://fabfile.org) 去做的。而有人在这 [Fabric](http://fabfile.org) 之上做了 [Crusine](https://github.com/sebastien/cuisine)，多做一层封装，提供多一些的抽象，简化了某些 API。
+DevOps 中，Python 界的[Fabric](http://fabfile.org) 也经常被提起。而据说 Instagram 就是用 [Fabric](http://fabfile.org) 去做的。而有人在这 [Fabric](http://fabfile.org) 之上做了 [Cuisine](https://github.com/sebastien/cuisine)，多做一层封装，提供多一些的抽象，简化了某些 API。
 
 废话少说，奉上代码：  
 ### 一、配置系统基本环境的代码
