@@ -35,6 +35,20 @@ def test_exists():
             print 'exist'
 
 
+import os
+def deploy_plugin():
+    files = []
+    with cd('~/blogging/my_blog/addon-plugins'):
+        pwd = run('pwd')
+        for f in run("find . * -name *.rb | grep -v '^\.'").split():
+            files.append(os.path.join(pwd, f))
+
+    with cd('~/blogging/octopress/plugins'):
+        with settings(warn_only=True):
+            for f in files:
+                sudo('ln -s %s .' % f)
+
+
 def deploy(commit_msg=None):
     if commit_msg:
         localpath = os.path.dirname(os.path.realpath(__file__))
