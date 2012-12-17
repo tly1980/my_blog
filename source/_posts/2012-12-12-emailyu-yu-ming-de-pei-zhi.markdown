@@ -13,7 +13,7 @@ description: 如何做邮件相关的域名配置
 ### 第一点域名上的 MX 配置主要是用来收信的。
 
 譬如某个仁兄(foo@example.com) 要往 abc@keyonly.com 发信，这个仁兄的 MTU（就是 Postfix 或者 Sendmail ）首先向 keyonly.com 的 域名服务器查询 keyonly.com 的 MX 记录。    
-譬如查到 MX 记录指向 mail.keyonly.com ，example.com MTU 就会向 mail.keyonly.com 的 MTU 发送 SMTP 请求 （现在流行 ESMTP ）进行投递。
+譬如查到 MX 记录指向 mail.keyonly.com ，example.com MTU 就会向 mail.keyonly.com 的 MTA 发送 SMTP 请求 （现在流行 ESMTP ）进行投递。
 
 发 email 第一步解决了，知道信要往哪一个邮局发去，即往收件人的域名地址的 MX 记录上指向的机器发去。    
 问题又来了，如何确认发信人的身份呢？
@@ -109,7 +109,9 @@ google._domainkey.keyonly.com. 86400 IN	TXT	"v=DKIM1\; k=rsa\; p=MIGfMA0GCSqGSIb
 
 ###  3）SPF 跟 DKIM 的结合使用
 
-SPF 跟 DKIM 完全可以绑定到不同域名上。譬如说，从 keyonly.com 发出来的 email 不用必须是用 keyonly.com 签名的，完全可以是其他域名签名的，譬如 2html.io (DKIM 签名的 d 项目就必须相应改为 2html.io ，而且 2html.io 域名服务器必须能提供相应 DKIM 公钥 )。
+SPF 跟 DKIM 完全可以绑定到不同域名上。譬如说，从 keyonly.com 发出来的 email 不用必须是用 keyonly.com 签名的，完全可以是其他域名签名的。
+
+譬如说，我收到 NAB 银行的 email 签名的就是 Ubank (Ubank 是 NAB 的一个子银行)。感觉是他们公用某些 IT 构架所导致的。
 
 ## 后记
 
@@ -118,5 +120,9 @@ SPF 跟 DKIM 完全可以绑定到不同域名上。譬如说，从 keyonly.com 
 	* signed by, mailed by （对着收件人按右键）。
 	* show original 会显示邮件的原始信息。
 
+一般大的 email 服务器会要求 SPF / DKIM 至少有一样；否则被 SPAM 几率就会增加。
 
+实际上有很多大公司大机构，都不一定将这个问题处理得很好。譬如 NAB （National Australia Bank） 的 email 就连 SPF 都没有设置，虽然有设置 DKIM，但却用的是自己子银行 Ubank 的。严格来说，这不是一个金融公司专业的 IT 表现。实际上 NAB 前段还专门发信通知大家小心被钓鱼邮件骗。如果它能一早就做好 SPF / DKIM ，应该可以提高犯罪分子的作案难度，减少出现问题的机会。
+
+而这点 CBA 就比 NAB 做得好多了，SPF / DKIM 都正确设置了，感觉比较专业。
 
