@@ -111,7 +111,7 @@ google._domainkey.keyonly.com. 86400 IN	TXT	"v=DKIM1\; k=rsa\; p=MIGfMA0GCSqGSIb
 
 SPF 跟 DKIM 完全可以绑定到不同域名上。譬如说，从 keyonly.com 发出来的 email 不用必须是用 keyonly.com 签名的，完全可以是其他域名签名的。
 
-譬如说，我收到 NAB 银行的 email 签名的就是 Ubank (Ubank 是 NAB 的一个子银行)。感觉是他们公用某些 IT 构架所导致的。
+譬如说，我收到 NAB 银行的 email 签名的就是 Ubank (Ubank 是 NAB 的一个子银行)。感觉是他们共用某些 IT 构架所导致的。
 
 ## 后记
 
