@@ -1,11 +1,11 @@
 ---
 layout: post
-title: "Email 与域名的配置"
+title: "Email 与域名的配置 (SPF / DKIM)"
 date: 2012-12-12 21:30
 comments: true
 categories: [技术, email, 域名]
-keywords: email,DKIM,SPF,邮件,mx,mta
-description: 如何做邮件相关的域名配置
+keywords: email,DKIM,SPF,邮件,mx,mta,配置
+description: 如何做邮件相关的域名配置。如何配置 SPF DKIM。
 ---
 
 长久以来都积压了不少 email 跟域名的疑问。纸上得来终觉浅，最近终于有时间集中将这些东西捋一下，具体实战一下。理清一些思路，有了更好的理解。
@@ -111,7 +111,7 @@ google._domainkey.keyonly.com. 86400 IN	TXT	"v=DKIM1\; k=rsa\; p=MIGfMA0GCSqGSIb
 
 SPF 跟 DKIM 完全可以绑定到不同域名上。譬如说，从 keyonly.com 发出来的 email 不用必须是用 keyonly.com 签名的，完全可以是其他域名签名的。
 
-譬如说，我收到 NAB 银行的 email 签名的就是 Ubank (Ubank 是 NAB 的一个子银行)。感觉是他们共用某些 IT 构架所导致的。
+譬如说，我收到 NAB 银行的 email 签名的就是 Ubank (Ubank 是 NAB 的一个子银行)。感觉是他们	共用某些 IT 构架所导致的。
 
 ## 后记
 
