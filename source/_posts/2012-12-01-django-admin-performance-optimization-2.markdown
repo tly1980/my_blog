@@ -4,7 +4,7 @@ title: "Django Admin 的性能优化二"
 date: 2012-12-01 15:35
 comments: true
 categories: [技术, django]
-keywords: django,性能优化,admin,queryset
+keywords: django, 性能优化, admin, queryset
 description: 如何帮 Django Admin 做性能优化
 ---
 

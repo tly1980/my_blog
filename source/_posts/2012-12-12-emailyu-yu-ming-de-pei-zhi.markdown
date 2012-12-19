@@ -4,7 +4,7 @@ title: "Email 与域名的配置 (SPF / DKIM)"
 date: 2012-12-12 21:30
 comments: true
 categories: [技术, email, 域名]
-keywords: email,DKIM,SPF,邮件,mx,mta,配置
+keywords: email, DKIM, SPF, 邮件, mx, mta, 配置
 description: 如何做邮件相关的域名配置。如何配置 SPF DKIM。
 ---
 
